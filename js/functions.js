@@ -30,10 +30,3 @@ function parseNumbers(string) {
 checkStringLen('проверяемая строка', 18);
 parseNumbers('1 кефир, 0.5 батона');
 isPalindrome('Лёша на полке клопа нашёл ');
-
-
-console.log(isPalindrome('топот')); // true
-// Несмотря на разный регистр, тоже палиндром
-console.log(isPalindrome('ДовОд')); // true
-// Это не палиндром
-console.log(isPalindrome('Кекс'));  // false
