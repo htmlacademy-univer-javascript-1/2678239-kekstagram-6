@@ -1,45 +1,34 @@
-import {getRandomElementsFromArray, random} from './utils.js';
+import {getRandomElementsFromArray, generateRandomNumber} from './utils.js';
+import {MAX_COMMENTS, MAX_LIKES, MESSAGES, DESCRIPTIONS, MIN_LIKES, NAMES} from './constants.js';
 
-const MESSAGES = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-];
 
-const NAMES = [
-  'Олег', 'Алёна', 'Фёдор', 'Дмитрий', 'Мария'
-];
-
-function createPhoto(id, commentGenerator) {
+function createPost(id, commentGenerator) {
   const comments = [];
-  const commentSize = random(0, 30);
-  for (let i = 0; i < commentSize; i++) {
+  const commentsCount = generateRandomNumber(0, MAX_COMMENTS);
+  for (let i = 0; i < commentsCount; i++) {
     comments.push(commentGenerator());
   }
   return {
-    id: id,
+    id,
     url: `photos/${id}.jpg`,
-    description: 'Cool photo!',
-    likes: random(15, 200),
-    comments: comments,
+    description: getRandomElementsFromArray(DESCRIPTIONS)[0],
+    likes: generateRandomNumber(MIN_LIKES, MAX_LIKES),
+    comments
   };
 }
 
-function createPhotoGenerator(commentGenerator) {
+function createPostGenerator(commentGenerator) {
   let lastGeneratedId = 1;
   return function () {
-    return createPhoto(lastGeneratedId++, commentGenerator);
+    return createPost(lastGeneratedId++, commentGenerator);
   };
 }
 
 function createComment(id) {
-  const avatarId = random(1, 6);
-  const messageCount = random(1, 2);
+  const avatarId = generateRandomNumber(1, 6);
+  const messageCount = generateRandomNumber(1, 2);
   return {
-    id: id,
+    id,
     avatar: `img/avatar-${avatarId}.svg`,
     name: getRandomElementsFromArray(NAMES)[0],
     message: getRandomElementsFromArray(MESSAGES, messageCount).join(' ')
@@ -53,4 +42,4 @@ function createCommentGenerator() {
   };
 }
 
-export {createPhotoGenerator, createCommentGenerator};
+export {createPostGenerator, createCommentGenerator};

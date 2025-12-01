@@ -1,16 +1,14 @@
-import {createPhotoGenerator, createCommentGenerator} from './data.js';
+import {createPostGenerator, createCommentGenerator} from './data.js';
 
 function main() {
   const commentGenerator = createCommentGenerator();
-  const photoGenerator = createPhotoGenerator(commentGenerator);
+  const photoGenerator = createPostGenerator(commentGenerator);
 
   const size = 25;
-  const photos = [];
+  const posts = [];
   for (let i = 1; i <= size; i++) {
-    photos.push(photoGenerator());
+    posts.push(photoGenerator());
   }
-
-  console.log(photos);
 }
 
 main();
