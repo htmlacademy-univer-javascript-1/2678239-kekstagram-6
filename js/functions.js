@@ -32,3 +32,5 @@ function compareTime(a, b) {
   if (a.hours === b.hours && a.minutes === b.minutes) {return 0;}
   return -1;
 }
+
+export {isWorkTime};
