@@ -10,16 +10,16 @@ function createPicture(data) {
   img.src = data.url;
   img.alt = data.description;
   likes.textContent = data.likes;
-  comments.textContent = data.comments;
+  comments.textContent = data.comments.length;
   return newPicture;
 }
 
 function renderPictures(pictures) {
-  const pictureContainer = document.querySelector('.pictures');
+  const picturesContainer = document.querySelector('.pictures');
   const pictureListFragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {pictureListFragment.appendChild(createPicture(picture));});
-  pictureContainer.append(pictureListFragment);
+  picturesContainer.append(pictureListFragment);
 }
 
 export {renderPictures};

@@ -11,15 +11,6 @@ import {
   MAX_AVATAR_ID, MIN_MESSAGES_COUNT, MAX_MESSAGES_COUNT
 } from './constants.js';
 
-function createPicture(id) {
-  return {
-    url: `photos/${id}.jpg`,
-    description: getRandomElementsFromArray(DESCRIPTIONS)[0],
-    likes: generateRandomNumber(MIN_LIKES, MAX_LIKES),
-    comments: generateRandomNumber(MIN_COMMENTS, MAX_COMMENTS)
-  };
-}
-
 function createPost(id, commentGenerator) {
   const comments = [];
   const commentsCount = generateRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
@@ -53,13 +44,6 @@ function createComment(id) {
   };
 }
 
-function createPictureGenerator() {
-  let lastGeneratedId = 1;
-  return function () {
-    return createPicture(lastGeneratedId++);
-  };
-}
-
 function createCommentGenerator() {
   let lastGeneratedId = 1;
   return function () {
@@ -67,4 +51,4 @@ function createCommentGenerator() {
   };
 }
 
-export {createPostGenerator, createCommentGenerator, createPictureGenerator};
+export {createPostGenerator, createCommentGenerator};
