@@ -1,5 +1,6 @@
 import {getRandomElementsFromArray, generateRandomNumber} from './utils.js';
 import {
+  MIN_COMMENTS,
   MAX_COMMENTS,
   MAX_LIKES,
   MESSAGES,
@@ -10,10 +11,9 @@ import {
   MAX_AVATAR_ID, MIN_MESSAGES_COUNT, MAX_MESSAGES_COUNT
 } from './constants.js';
 
-
 function createPost(id, commentGenerator) {
   const comments = [];
-  const commentsCount = generateRandomNumber(0, MAX_COMMENTS);
+  const commentsCount = generateRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
   for (let i = 0; i < commentsCount; i++) {
     comments.push(commentGenerator());
   }
