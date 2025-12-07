@@ -1,5 +1,6 @@
 import {getRandomElementsFromArray, generateRandomNumber} from './utils.js';
 import {
+  MIN_COMMENTS,
   MAX_COMMENTS,
   MAX_LIKES,
   MESSAGES,
@@ -11,9 +12,19 @@ import {
 } from './constants.js';
 
 
+function generatePosts(size) {
+  const commentGenerator = createCommentGenerator();
+  const postGenerator = createPostGenerator(commentGenerator);
+  const posts = [];
+  for (let i = 1; i <= size; i++) {
+    posts.push(postGenerator());
+  }
+  return posts;
+}
+
 function createPost(id, commentGenerator) {
   const comments = [];
-  const commentsCount = generateRandomNumber(0, MAX_COMMENTS);
+  const commentsCount = generateRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
   for (let i = 0; i < commentsCount; i++) {
     comments.push(commentGenerator());
   }
@@ -51,4 +62,4 @@ function createCommentGenerator() {
   };
 }
 
-export {createPostGenerator, createCommentGenerator};
+export {createPostGenerator, createCommentGenerator, generatePosts};
