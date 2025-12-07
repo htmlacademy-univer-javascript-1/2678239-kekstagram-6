@@ -11,6 +11,17 @@ import {
   MAX_AVATAR_ID, MIN_MESSAGES_COUNT, MAX_MESSAGES_COUNT
 } from './constants.js';
 
+
+function generatePosts(size) {
+  const commentGenerator = createCommentGenerator();
+  const postGenerator = createPostGenerator(commentGenerator);
+  const posts = [];
+  for (let i = 1; i <= size; i++) {
+    posts.push(postGenerator());
+  }
+  return posts;
+}
+
 function createPost(id, commentGenerator) {
   const comments = [];
   const commentsCount = generateRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
@@ -51,4 +62,4 @@ function createCommentGenerator() {
   };
 }
 
-export {createPostGenerator, createCommentGenerator};
+export {createPostGenerator, createCommentGenerator, generatePosts};
