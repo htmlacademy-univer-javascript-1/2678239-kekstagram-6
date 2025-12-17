@@ -4,7 +4,7 @@ const pristine = initValidator();
 
 function createCloseHandler(imgUpload) {
   const overlay = document.querySelector('.img-upload__overlay');
-  const submitButton = document.querySelector('.img-upload__submit');
+  const form = document.querySelector('.img-upload__form');
   const closeButton = document.querySelector('.img-upload__cancel');
   const hashtagElement = document.querySelector('.text__hashtags');
   const descriptionElements = document.querySelector('.text__description');
@@ -28,7 +28,7 @@ function createCloseHandler(imgUpload) {
     descriptionElements.value = '';
     hashtagElement.removeEventListener('keydown', onEsc);
     descriptionElements.removeEventListener('keydown', onEsc);
-    submitButton.removeEventListener('click', onSubmit);
+    form.removeEventListener('submit', onSubmit);
     closeButton.removeEventListener('click', onClick);
     document.removeEventListener('keydown', onKeyDown);
   }
@@ -50,7 +50,7 @@ function onEsc(evt) {
 }
 
 function openUploader() {
-  const submitButton = document.querySelector('.img-upload__submit');
+  const form = document.querySelector('.img-upload__form');
   const overlay = document.querySelector('.img-upload__overlay');
   const imgUpload = document.querySelector('.img-upload__input');
   const hashtagElement = document.querySelector('.text__hashtags');
@@ -60,7 +60,7 @@ function openUploader() {
   document.body.classList.add('modal-open');
   hashtagElement.addEventListener('keydown', onEsc);
   descriptionElements.addEventListener('keydown', onEsc);
-  submitButton.addEventListener('click', onSubmit);
+  form.addEventListener('submit', onSubmit);
   createCloseHandler(imgUpload);
 }
 
