@@ -1,8 +1,11 @@
 import {initValidator} from './validator.js';
+import {renderErrorMessage, renderSuccessMessage} from './alerts.js';
+import {sendForm} from './api.js';
 
 const pristine = initValidator();
 
-function createCloseHandler(imgUpload) {
+function createCloseFormHandler() {
+  const imgUpload = document.querySelector('.img-upload__input');
   const overlay = document.querySelector('.img-upload__overlay');
   const form = document.querySelector('.img-upload__form');
   const closeButton = document.querySelector('.img-upload__cancel');
@@ -20,12 +23,14 @@ function createCloseHandler(imgUpload) {
     }
   }
 
-  function close() {
+  function close(isNeedSave = false) {
     overlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
     imgUpload.value = '';
-    hashtagElement.value = '';
-    descriptionElements.value = '';
+    if (!isNeedSave) {
+      hashtagElement.value = '';
+      descriptionElements.value = '';
+    }
     hashtagElement.removeEventListener('keydown', onEsc);
     descriptionElements.removeEventListener('keydown', onEsc);
     form.removeEventListener('submit', onSubmit);
@@ -35,11 +40,24 @@ function createCloseHandler(imgUpload) {
 
   closeButton.addEventListener('click', onClick);
   document.addEventListener('keydown', onKeyDown);
+
+  return close;
 }
 
 function onSubmit(evt) {
-  if (!pristine.validate()) {
-    evt.preventDefault();
+  evt.preventDefault();
+
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    sendForm(formData)
+      .then(() => {
+        createCloseFormHandler()();
+        renderSuccessMessage();
+      })
+      .catch(() => {
+        createCloseFormHandler()(true);
+        renderErrorMessage();
+      });
   }
 }
 
@@ -52,7 +70,6 @@ function onEsc(evt) {
 function openUploader() {
   const form = document.querySelector('.img-upload__form');
   const overlay = document.querySelector('.img-upload__overlay');
-  const imgUpload = document.querySelector('.img-upload__input');
   const hashtagElement = document.querySelector('.text__hashtags');
   const descriptionElements = document.querySelector('.text__description');
 
@@ -61,7 +78,7 @@ function openUploader() {
   hashtagElement.addEventListener('keydown', onEsc);
   descriptionElements.addEventListener('keydown', onEsc);
   form.addEventListener('submit', onSubmit);
-  createCloseHandler(imgUpload);
+  createCloseFormHandler();
 }
 
 

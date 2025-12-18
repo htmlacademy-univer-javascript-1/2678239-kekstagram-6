@@ -1395,3 +1395,22 @@ main {
 .hidden {
   display: none;
 }
+
+.error-container__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: 2px solid black;
+}
+
+.error-container {
+  font-size: 20px;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 140px;
+  padding: 80px 30px;
+  width: 380px;
+  border-radius: 10px;
+  background-color: #a6140a;
+}
