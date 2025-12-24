@@ -1,8 +1,13 @@
 import {initValidator} from './validator.js';
+import {renderErrorMessage, renderSuccessMessage, isModalShown} from './alerts.js';
+import {sendForm} from './api.js';
 
 const pristine = initValidator();
 
-function createCloseHandler(imgUpload) {
+let closeForm;
+
+function createCloseFormHandler() {
+  const imgUpload = document.querySelector('.img-upload__input');
   const overlay = document.querySelector('.img-upload__overlay');
   const form = document.querySelector('.img-upload__form');
   const closeButton = document.querySelector('.img-upload__cancel');
@@ -14,7 +19,7 @@ function createCloseHandler(imgUpload) {
   }
 
   function onKeyDown(evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === 'Escape' && !isModalShown) {
       evt.preventDefault();
       close();
     }
@@ -35,11 +40,24 @@ function createCloseHandler(imgUpload) {
 
   closeButton.addEventListener('click', onClick);
   document.addEventListener('keydown', onKeyDown);
+  return close;
 }
 
 function onSubmit(evt) {
-  if (!pristine.validate()) {
-    evt.preventDefault();
+  evt.preventDefault();
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    sendForm(formData)
+      .then(() => {
+        if (!closeForm) {
+          closeForm = createCloseFormHandler();
+        }
+        closeForm();
+        renderSuccessMessage();
+      })
+      .catch(() => {
+        renderErrorMessage();
+      });
   }
 }
 
@@ -52,7 +70,6 @@ function onEsc(evt) {
 function openUploader() {
   const form = document.querySelector('.img-upload__form');
   const overlay = document.querySelector('.img-upload__overlay');
-  const imgUpload = document.querySelector('.img-upload__input');
   const hashtagElement = document.querySelector('.text__hashtags');
   const descriptionElements = document.querySelector('.text__description');
 
@@ -61,7 +78,7 @@ function openUploader() {
   hashtagElement.addEventListener('keydown', onEsc);
   descriptionElements.addEventListener('keydown', onEsc);
   form.addEventListener('submit', onSubmit);
-  createCloseHandler(imgUpload);
+  closeForm = createCloseFormHandler();
 }
 
 
