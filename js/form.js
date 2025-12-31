@@ -7,7 +7,6 @@ const pristine = initValidator();
 let closeForm;
 
 function createCloseFormHandler() {
-  const imgUpload = document.querySelector('.img-upload__input');
   const overlay = document.querySelector('.img-upload__overlay');
   const form = document.querySelector('.img-upload__form');
   const closeButton = document.querySelector('.img-upload__cancel');
@@ -29,12 +28,11 @@ function createCloseFormHandler() {
   function close() {
     overlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    imgUpload.value = '';
-    hashtagElement.value = '';
-    descriptionElements.value = '';
-    preview.src='../img/upload-default-image.jpg';
+    pristine.reset();
+    form.reset();
+    preview.src = 'img/upload-default-image.jpg';
     previewEffects.forEach((effect) => {
-      effect.style.backgroundImage = 'url(../img/upload-default-image.jpg)';
+      effect.style.backgroundImage = 'url(img/upload-default-image.jpg)';
     });
 
     hashtagElement.removeEventListener('keydown', onEsc);
@@ -53,6 +51,8 @@ function onSubmit(evt) {
   evt.preventDefault();
   if (pristine.validate()) {
     const formData = new FormData(evt.target);
+    const submitButton = document.querySelector('.img-upload__submit');
+    submitButton.disabled = true;
     sendForm(formData)
       .then(() => {
         if (!closeForm) {
@@ -63,7 +63,8 @@ function onSubmit(evt) {
       })
       .catch(() => {
         renderErrorMessage();
-      });
+      })
+      .finally(() => {submitButton.disabled = false;});
   }
 }
 
