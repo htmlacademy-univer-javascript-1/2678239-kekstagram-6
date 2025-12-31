@@ -15,7 +15,7 @@ function createComment(commentData) {
 function renderCommentCounter(visibleCount) {
   const visibleCommentsCountElement = document.querySelector('.social__comment-count');
   const totalCountElement = visibleCommentsCountElement.querySelector('.comments-count');
-  visibleCommentsCountElement.innerHTML = `${visibleCount} из <span class="comments-count">${totalCountElement.textContent}</span> комментариев`;
+  visibleCommentsCountElement.innerHTML = `<span class="social__comment-shown-count">${visibleCount}</span> из <span class="comments-count social__comment-total-count">${totalCountElement.textContent}</span> комментариев`;
 }
 
 function getPostData(picture, postDataList) {
