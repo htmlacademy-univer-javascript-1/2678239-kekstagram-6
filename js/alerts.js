@@ -4,7 +4,7 @@ function createUploadErrorElement(errorText) {
   const errorMessageElement = document.createElement('section');
   errorMessageElement.classList.add('overlay');
   errorMessageElement.innerHTML = `
-   <div class='error-container'>
+   <div class='error-container data-error'>
     <button type="button" class="cancel error-container__close">Закрыть</button>
     <p>${errorText}</p>
    </div>`;
@@ -31,8 +31,8 @@ function createResponseMessage(button, modalOverlay) {
 
   function close() {
     isModalShown = false;
-    button.removeEventListener('click', onCLick);
-    modalOverlay.removeEventListener('click', onCLick);
+    button.removeEventListener('click', onBtnCLick);
+    modalOverlay.removeEventListener('click', onOverlayCLick);
     document.removeEventListener('keydown', onKeydown);
     if (modalOverlay.classList.contains('error')) {
       const overlay = document.querySelector('.img-upload__overlay');
@@ -47,21 +47,29 @@ function createResponseMessage(button, modalOverlay) {
       close();
     }
   }
-  function onCLick() {
+
+  function onBtnCLick() {
     close();
   }
 
-  button.addEventListener('click', onCLick);
-  modalOverlay.addEventListener('click', onCLick);
+  function onOverlayCLick(evt) {
+    if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
+      return;
+    }
+    close();
+  }
+
+  button.addEventListener('click', onBtnCLick);
+  modalOverlay.addEventListener('click', onOverlayCLick);
   document.addEventListener('keydown', onKeydown);
   document.body.appendChild(modalOverlay);
 }
 
 function renderSuccessMessage() {
   const templateContent = document.querySelector('#success').content;
-  const btn = templateContent.querySelector('.success__button');
-  const template = templateContent.querySelector('.success');
-  createResponseMessage(btn, template.cloneNode(true));
+  const template = templateContent.querySelector('.success').cloneNode(true);
+  const btn = template.querySelector('.success__button');
+  createResponseMessage(btn, template);
 }
 
 function renderErrorMessage() {
